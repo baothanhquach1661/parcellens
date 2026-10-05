@@ -1,0 +1,18 @@
+# 1) Secret
+.env
+.env.*
+!.env.example
+
+# 2) Dữ liệu thật / nhạy cảm
+data/private/
+backups/
+logs/
+*.log
+
+# 3) Tự sinh / dựng lại được
+.venv/
+__pycache__/
+.pytest_cache/
+
+# macOS tự tạo file này trong mọi thư mục mở bằng Finder
+.DS_Store
