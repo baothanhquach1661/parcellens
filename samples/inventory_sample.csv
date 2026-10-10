@@ -1,0 +1,11 @@
+Handle,Title,Option1 Name,Option1 Value,SKU,Location,Bin name,Incoming (not editable),Unavailable (not editable),Committed (not editable),Available (not editable),On hand (current),On hand (new)
+gel-polish-101,Gel Polish Shade 101,Title,Default Title,GEL-101,Los Angeles warehouse,,0,0,0,120,120,120
+gel-polish-101,Gel Polish Shade 101,Title,Default Title,GEL-101,New Jersey warehouse,,0,0,0,80,80,80
+gel-polish-121,Gel Polish Shade 121,Title,Default Title,GEL-121,LA,,0,0,0,50,50,50
+gel-polish-121,Gel Polish Shade 121,Title,Default Title,GEL-121,NJ,,0,0,0,40,40,40
+uv-led-lamp-48w,UV/LED Nail Lamp 48W,Title,Default Title,LAMP-UVLED-48W,New Jersey warehouse,,0,0,0,12,12,12
+no-wipe-top-coat,No-Wipe Top Coat 15ml,Title,Default Title,TOP-NOWIPE,New Jersey warehouse,,0,0,0,25,25,25
+rubber-base-coat,Rubber Base Coat 15ml,Title,Default Title,BASE-RUBBER,Dallas warehouse,,0,0,0,10,10,10
+cuticle-oil-15ml,Cuticle Oil 15ml,Title,Default Title,CUTI-OIL-15,Los Angeles warehouse,,0,0,0,-3,-3,-3
+mystery-item,Mystery item,Title,Default Title,,Los Angeles warehouse,,0,0,0,5,5,5
+gel-polish-101,Gel Polish Shade 101,Title,Default Title,GEL-101,Los Angeles warehouse,,0,0,0,999,999,999

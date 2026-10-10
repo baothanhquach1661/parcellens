@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+{% load unfold %}
+
+{% block content %}
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div class="lg:col-span-2">
+            {% component "unfold/components/card.html" with title="Import a CSV file" title_icon="upload_file" %}
+                <form method="post" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+
+                    {% include "unfold/helpers/form_errors.html" with errors=form.non_field_errors %}
+                    {% include "unfold/helpers/field.html" with field=form.kind %}
+                    {% include "unfold/helpers/field.html" with field=form.file %}
+
+                    <div class="flex flex-wrap gap-2">
+                        {% component "unfold/components/button.html" with submit=1 icon="upload" %}
+                            Import
+                        {% endcomponent %}
+                        {% url "admin:imports_importlog_changelist" as logs_url %}
+                        {% component "unfold/components/button.html" with href=logs_url variant="default" %}
+                            Cancel
+                        {% endcomponent %}
+                    </div>
+                </form>
+            {% endcomponent %}
+        </div>
+
+        <div>
+            {% component "unfold/components/card.html" with title="Required columns" title_icon="table_view" %}
+                {% for label, columns in formats %}
+                    <div class="mb-4">
+                        <p class="font-semibold text-important">{{ label }}</p>
+                        <p class="text-sm text-subtle">{{ columns }}</p>
+                    </div>
+                {% endfor %}
+                <p class="text-sm text-subtle">
+                    Header names are not case-sensitive. A missing required column stops the import;
+                    a bad row is skipped and listed in the import log.
+                    Full details: docs/import-formats.md in the repository.
+                </p>
+            {% endcomponent %}
+        </div>
+    </div>
+{% endblock %}

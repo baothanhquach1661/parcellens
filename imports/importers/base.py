@@ -28,6 +28,8 @@ class BaseImporter:
 
     kind = None
     required_columns = ()
+    # canonical name -> other spellings accepted in the header (all lower case).
+    column_aliases = {}
 
     def __init__(self, file, file_name, user=None):
         self.file = file
@@ -67,7 +69,15 @@ class BaseImporter:
         if not reader.fieldnames:
             raise ImportFileError('The file is empty.')
         # Header spelling varies between exports ("Lineitem sku" vs "Lineitem SKU").
-        reader.fieldnames = [name.strip().lower() for name in reader.fieldnames]
+        fieldnames = [(name or '').strip().lower() for name in reader.fieldnames]
+        for canonical, spellings in self.column_aliases.items():
+            if canonical in fieldnames:
+                continue
+            for spelling in spellings:
+                if spelling in fieldnames:
+                    fieldnames[fieldnames.index(spelling)] = canonical
+                    break
+        reader.fieldnames = fieldnames
         missing = [column for column in self.required_columns if column not in reader.fieldnames]
         if missing:
             raise ImportFileError(f'Missing required column(s): {", ".join(missing)}.')

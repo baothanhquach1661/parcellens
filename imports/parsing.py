@@ -1,6 +1,6 @@
 """Turn raw CSV text into Python values, or raise ValueError with a clear message."""
 
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from zoneinfo import ZoneInfo
 
@@ -71,6 +71,29 @@ def parse_positive_int(value, label):
     if number < 1:
         raise ValueError(f'{label} must be at least 1')
     return number
+
+
+def parse_non_negative_int(value, label):
+    value = clean(value)
+    try:
+        number = int(value)
+    except ValueError:
+        raise ValueError(f"{label}: '{value}' is not a whole number") from None
+    if number < 0:
+        raise ValueError(f'{label} is {number}; it must be 0 or more')
+    return number
+
+
+def parse_date(value, label):
+    """A calendar date ("2026-10-12"); a date and time is cut down to its date."""
+    value = clean(value)
+    if not value:
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        pass
+    return parse_datetime(value, label).date()
 
 
 def parse_choice(value, choices, label, default=None):

@@ -1,0 +1,12 @@
+Order,Carrier,Tracking Number,Status,Event Time,Description,Location,Shipped At,Expected Delivery
+#2002,UPS,1Z 999 AA1 01 2345 6784,Label Created,2026-10-08 10:31:00 -0400,Shipping label created,"Secaucus, NJ",2026-10-08 10:30:00 -0400,2026-10-11
+#2002,UPS,1Z999AA10123456784,Delivered,2026-10-09 15:12:00 -0400,"Delivered, front door","Jersey City, NJ",,
+#2002,UPS,1Z999AA10123456784,In Transit,2026-10-08 22:05:00 -0400,Departed facility,"Secaucus, NJ",,
+#2004,USPS,9400 1000 0000 0000 0000 01,Pre-Transit,2026-10-09 09:00:00 -0400,Label printed,"Edison, NJ",,2026-10-13
+#2004,USPS,9400100000000000000001,Failed Attempt,2026-10-09 18:30:00 -0400,Delivery attempted - no access to building,"Boston, MA",,
+#2001,FedEx,781234567890,In Transit,2026-10-09 08:00:00 -0700,Picked up,"Ontario, CA",2026-10-09 07:30:00 -0700,2026-10-12
+#9999,UPS,1Z0000000000000001,In Transit,2026-10-09 08:00:00 -0700,,,,
+#2001,OnTrac,C11223344556677,In Transit,2026-10-09 08:00:00 -0700,,,,
+#2001,FedEx,781234567890,Delivered,2030-01-01 12:00:00 -0700,,,,
+#2003,UPS,1Z999AA10123456784,In Transit,2026-10-09 09:00:00 -0700,,,,
+#2001,FedEx,781234567890,Lost in space,2026-10-09 10:00:00 -0700,,,,

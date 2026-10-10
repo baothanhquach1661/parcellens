@@ -8,7 +8,7 @@ from imports.models import ImportStatus
 
 
 class Command(BaseCommand):
-    help = 'Import a CSV file (orders) and print what changed.'
+    help = 'Import a CSV file (orders, inventory or tracking) and print what changed.'
 
     def add_arguments(self, parser):
         parser.add_argument('kind', choices=sorted(IMPORTERS), help='What the file contains.')
