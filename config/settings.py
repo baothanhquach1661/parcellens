@@ -44,6 +44,9 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Admin theme. Must come before django.contrib.admin so its templates win.
+    'unfold',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,5 +153,42 @@ STATIC_URL = 'static/'
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    },
+}
+
+
+# Login
+# https://docs.djangoproject.com/en/6.1/ref/settings/#login-redirect-url
+
+# Where to go after logging in when no ?next= is given.
+# Unfold's login form does not send `next`, so without this a direct visit to
+# /admin/login/ ends on Django's default /accounts/profile/ (404).
+LOGIN_REDIRECT_URL = 'admin:index'
+
+
+# Django admin theme (django-unfold)
+# https://unfoldadmin.com/docs/configuration/settings/
+
+UNFOLD = {
+    'SITE_TITLE': 'ShipRadar Admin',
+    'SITE_HEADER': 'ShipRadar',
+    'SITE_SUBHEADER': 'Back office',
+    'SITE_SYMBOL': 'radar',  # Material Symbols icon name
+    'COLORS': {
+        # Navy primary, hue 257. 950 is the portfolio navy (#0F1E33).
+        # 600 = buttons/links in light mode, 500 = text/buttons in dark mode.
+        'primary': {
+            '50': 'oklch(97.5% 0.011 257)',
+            '100': 'oklch(94.5% 0.022 257)',
+            '200': 'oklch(88.5% 0.045 257)',
+            '300': 'oklch(80% 0.075 257)',
+            '400': 'oklch(70% 0.105 257)',
+            '500': 'oklch(60.5% 0.125 257)',
+            '600': 'oklch(43% 0.115 257)',
+            '700': 'oklch(37% 0.098 257)',
+            '800': 'oklch(31.5% 0.08 257)',
+            '900': 'oklch(27% 0.062 257)',
+            '950': 'oklch(23.4% 0.046 257)',
+        },
     },
 }

@@ -7,3 +7,6 @@ psycopg[binary]==3.3.6
 
 # Loads .env into environment variables for local development
 python-dotenv==1.2.4
+
+# Django admin theme. Pinned exactly: 0.x releases may change APIs.
+django-unfold==0.108.0
