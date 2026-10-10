@@ -55,7 +55,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # ShipRadar apps
+    'core',
     'accounts',
+    'inventory',
 ]
 
 MIDDLEWARE = [
