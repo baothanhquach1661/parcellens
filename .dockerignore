@@ -1,0 +1,23 @@
+# Secrets: never bake them into the image. Pass env vars at runtime instead.
+.env
+.env.*
+!.env.example
+
+# Local environment and caches (macOS venv binaries do not run on Linux)
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Git and editor files
+.git/
+.vscode/
+.DS_Store
+
+# Local data and leftovers
+db/
+data/
+backups/
+logs/
+*.log
+db.sqlite3
