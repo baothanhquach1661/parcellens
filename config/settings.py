@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # ShipRadar apps
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -96,6 +99,10 @@ DATABASES = {
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
+
+
+# Custom user model. Must be set before the first `migrate`.
+AUTH_USER_MODEL = 'accounts.User'
 
 
 # Password validation
