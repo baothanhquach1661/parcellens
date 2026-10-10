@@ -13,3 +13,15 @@ class TimeStampedModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+def choices_constraint(field_name, choices, name):
+    """CheckConstraint that only allows the values of a TextChoices class.
+
+    `choices` on a field is only checked by forms and full_clean();
+    this makes PostgreSQL reject any other value too (imports, raw SQL).
+    """
+    return models.CheckConstraint(
+        condition=models.Q(**{f'{field_name}__in': choices.values}),
+        name=name,
+    )
