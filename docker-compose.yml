@@ -18,5 +18,27 @@ services:
       timeout: 3s
       retries: 10
 
+  web:
+    build: .
+    container_name: shipradar-web
+    # Same .env as local development...
+    env_file: .env
+    # ...but inside the Compose network the database is the "db" service on
+    # its internal port, not 127.0.0.1:5434 on the Mac. `environment` wins
+    # over `env_file`, and real env vars win over .env in settings.py.
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      # Mount the source code so edits on the Mac reload the dev server
+      # without rebuilding the image.
+      - .:/app
+    depends_on:
+      db:
+        # Wait until the db healthcheck passes, not just until it starts.
+        condition: service_healthy
+
 volumes:
   pgdata:
