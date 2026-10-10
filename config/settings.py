@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'inventory',
     'orders',
     'imports',
+    'issues',
 ]
 
 MIDDLEWARE = [
@@ -221,6 +222,13 @@ UNFOLD = {
                 'separator': True,
                 'items': [
                     {
+                        'title': 'Exceptions',
+                        'icon': 'report',
+                        'link': reverse_lazy('admin:issues_issue_changelist'),
+                        'badge': 'issues.badges.open_issues',
+                        'badge_variant': 'danger',
+                    },
+                    {
                         'title': 'Orders',
                         'icon': 'receipt_long',
                         'link': reverse_lazy('admin:orders_order_changelist'),
@@ -272,6 +280,16 @@ UNFOLD = {
                 'title': 'Administration',
                 'separator': True,
                 'items': [
+                    {
+                        'title': 'Rule settings',
+                        'icon': 'tune',
+                        'link': reverse_lazy('admin:issues_rulesetting_changelist'),
+                    },
+                    {
+                        'title': 'Holidays',
+                        'icon': 'event_busy',
+                        'link': reverse_lazy('admin:issues_holiday_changelist'),
+                    },
                     {
                         'title': 'Users',
                         'icon': 'group',

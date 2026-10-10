@@ -226,12 +226,12 @@ The names follow Shopify's own vocabulary (`Location`, `InventoryItem`, `Invento
 | `order` | FK → Order, cascade | |
 | `shipment` | FK → Shipment, nullable, cascade | Set for shipment-level rules, empty for order-level rules (table below) |
 | `rule_code` | choice | `overdue_unfulfilled`, `stockout`, `delivery_exception`, `missing_tracking`, `stale_tracking`, `late_delivery`, `suspicious_address` |
-| `severity` | choice | `high`, `medium`, `low`. Copied from the rule when the issue is created |
+| `severity` | small int choice | `1` high, `2` medium, `3` low, so "most urgent first" is a plain `ORDER BY severity`. Copied from the rule when the issue is created |
 | `status` | choice | `open`, `acknowledged`, `snoozed`, `resolved` |
 | `snoozed_until` | datetime, nullable | |
 | `resolution` | choice, nullable | `auto` (condition cleared) or `manual` (closed by a person) |
 | `details` | JSON | Rule-specific facts, e.g. `{"sku": "GEL-102", "location": "LA", "short_by": 4, "available_elsewhere": {"NJ": 10}}` |
-| `first_detected_at`, `last_seen_at`, `resolved_at` | datetime | |
+| `first_detected_at`, `last_seen_at`, `acknowledged_at`, `resolved_at` | datetime | `acknowledged_at` = first response, for KPIs |
 | `resolved_by` | FK → User, nullable, protect | |
 
 | Level | Rules | One open issue per |
@@ -239,15 +239,16 @@ The names follow Shopify's own vocabulary (`Location`, `InventoryItem`, `Invento
 | Order | `overdue_unfulfilled`, `stockout`, `missing_tracking`, `suspicious_address` | order + rule |
 | Shipment | `delivery_exception`, `stale_tracking`, `late_delivery` | shipment + rule |
 
-Constraint: unique `(order, shipment, rule_code)` while status is `open`, `acknowledged` or `snoozed`, with `nulls_distinct=False`. PostgreSQL normally treats every NULL as different, so without that flag two open order-level issues (both with `shipment = NULL`) would not conflict and duplicates would slip through.
+Constraints: unique `(order, shipment, rule_code)` while status is `open`, `acknowledged` or `snoozed`, with `nulls_distinct=False`; shipment set exactly for shipment-level rules; `snoozed` needs `snoozed_until`; `resolved` needs `resolved_at` and a resolution. PostgreSQL normally treats every NULL as different, so without that flag two open order-level issues (both with `shipment = NULL`) would not conflict and duplicates would slip through.
 
 ### `issues.IssueNote`
 
 | Field | Type | Notes |
 |---|---|---|
 | `issue` | FK → Issue, cascade | |
-| `author` | FK → User, protect | Users are deactivated, not deleted, so notes keep their author |
+| `author` | FK → User, nullable, protect | Empty for changes made by the rules engine. Users are deactivated, not deleted, so notes keep their author |
 | `body` | text | |
+| `is_system` | bool | `true` for status changes recorded by ShipRadar, `false` for typed comments |
 
 ### `issues.RuleSetting`
 
