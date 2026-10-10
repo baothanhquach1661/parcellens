@@ -1,6 +1,8 @@
 from datetime import timedelta
 from decimal import Decimal
+from io import StringIO
 
+from django.core.management import CommandError, call_command
 from django.db import IntegrityError, transaction
 from django.test import TestCase
 from django.utils import timezone
@@ -102,3 +104,26 @@ class ShipmentTests(TestCase):
 
         self.assertEqual(self.shipment.status, ShipmentStatus.LABEL_CREATED)
         self.assertIsNone(self.shipment.last_event_at)
+
+
+class SeedDemoTests(TestCase):
+    def test_seed_creates_consistent_data(self):
+        out = StringIO()
+        call_command('seed_demo', orders=80, seed=1, stdout=out)
+
+        self.assertEqual(Order.objects.count(), 80)
+        self.assertEqual(Location.objects.filter(is_default=True).count(), 1)
+        # No generated time may be in the future.
+        self.assertFalse(TrackingEvent.objects.filter(occurred_at__gt=timezone.now()).exists())
+        self.assertFalse(Order.objects.filter(placed_at__gt=timezone.now()).exists())
+        # Every shipment's copied status matches its newest event.
+        for shipment in Shipment.objects.prefetch_related('events'):
+            newest = max(shipment.events.all(), key=lambda event: event.occurred_at)
+            self.assertEqual(shipment.status, newest.status)
+        self.assertIn('Orders built to break a rule', out.getvalue())
+
+    def test_seed_refuses_to_mix_with_existing_data(self):
+        make_order()
+
+        with self.assertRaises(CommandError):
+            call_command('seed_demo', orders=10)

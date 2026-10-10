@@ -10,3 +10,6 @@ python-dotenv==1.2.4
 
 # Django admin theme. Pinned exactly: 0.x releases may change APIs.
 django-unfold==0.108.0
+
+# Fake names and addresses for `manage.py seed_demo` (also used on the demo site)
+Faker==40.39.0
