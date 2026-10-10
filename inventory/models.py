@@ -44,6 +44,9 @@ class InventoryItem(TimeStampedModel):
 
     class Meta:
         ordering = ['sku']
+        # Names shown in the admin; the table and code keep the Shopify-style names.
+        verbose_name = 'SKU'
+        verbose_name_plural = 'SKUs'
 
     def __str__(self):
         return self.sku
@@ -70,6 +73,7 @@ class InventoryLevel(TimeStampedModel):
     )
 
     class Meta:
+        verbose_name = 'stock level'
         constraints = [
             models.UniqueConstraint(
                 fields=['item', 'location'],
