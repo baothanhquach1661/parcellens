@@ -1,1 +1,9 @@
-# Dependencies will be added in step 0.2 / 1.3
+# Web framework
+Django==6.1.2
+
+# PostgreSQL driver (psycopg 3). [binary] ships its own libpq,
+# so the machine does not need a Postgres client installed.
+psycopg[binary]==3.3.6
+
+# Loads .env into environment variables for local development
+python-dotenv==1.2.4
