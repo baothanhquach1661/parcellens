@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     'accounts',
     'inventory',
     'orders',
+    'imports',
 ]
 
 MIDDLEWARE = [
@@ -193,5 +195,90 @@ UNFOLD = {
             '900': 'oklch(27% 0.062 257)',
             '950': 'oklch(23.4% 0.046 257)',
         },
+    },
+    # Ctrl/Cmd+K: search orders, shipments, SKUs... from any admin page
+    # (uses each ModelAdmin's search_fields).
+    'COMMAND': {
+        'search_models': True,
+    },
+    # Sidebar ordered by the daily workflow instead of alphabetically by app.
+    # Icons are Material Symbols names: https://fonts.google.com/icons
+    'SIDEBAR': {
+        'show_search': True,
+        'show_all_applications': False,
+        'navigation': [
+            {
+                'items': [
+                    {
+                        'title': 'Dashboard',
+                        'icon': 'space_dashboard',
+                        'link': reverse_lazy('admin:index'),
+                    },
+                ],
+            },
+            {
+                'title': 'Fulfillment',
+                'separator': True,
+                'items': [
+                    {
+                        'title': 'Orders',
+                        'icon': 'receipt_long',
+                        'link': reverse_lazy('admin:orders_order_changelist'),
+                        'badge': 'orders.badges.orders_to_ship',
+                        'badge_variant': 'primary',
+                    },
+                    {
+                        'title': 'Shipments',
+                        'icon': 'local_shipping',
+                        'link': reverse_lazy('admin:orders_shipment_changelist'),
+                        'badge': 'orders.badges.shipment_problems',
+                        'badge_variant': 'danger',
+                    },
+                ],
+            },
+            {
+                'title': 'Inventory',
+                'separator': True,
+                'items': [
+                    {
+                        'title': 'Stock levels',
+                        'icon': 'inventory_2',
+                        'link': reverse_lazy('admin:inventory_inventorylevel_changelist'),
+                    },
+                    {
+                        'title': 'SKUs',
+                        'icon': 'sell',
+                        'link': reverse_lazy('admin:inventory_inventoryitem_changelist'),
+                    },
+                    {
+                        'title': 'Locations',
+                        'icon': 'warehouse',
+                        'link': reverse_lazy('admin:inventory_location_changelist'),
+                    },
+                ],
+            },
+            {
+                'title': 'Data',
+                'separator': True,
+                'items': [
+                    {
+                        'title': 'Import logs',
+                        'icon': 'upload_file',
+                        'link': reverse_lazy('admin:imports_importlog_changelist'),
+                    },
+                ],
+            },
+            {
+                'title': 'Administration',
+                'separator': True,
+                'items': [
+                    {
+                        'title': 'Users',
+                        'icon': 'group',
+                        'link': reverse_lazy('admin:accounts_user_changelist'),
+                    },
+                ],
+            },
+        ],
     },
 }
